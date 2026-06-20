@@ -24,6 +24,7 @@ export default defineConfig({
       "import.meta.env.PUBLIC_COMMIT": JSON.stringify(COMMIT),
       "import.meta.env.PUBLIC_BRANCH": JSON.stringify(BRANCH),
       "import.meta.env.PUBLIC_BUILD_TIME": JSON.stringify(BUILD_TIME),
+      "import.meta.env.PUBLIC_SIGNALLING_URL": JSON.stringify(process.env.PUBLIC_SIGNALLING_URL || ""),
     },
     server: { watch: { ignored: ["**/ψ/**"] } },
   },

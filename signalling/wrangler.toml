@@ -1,0 +1,14 @@
+# Weizen P2P signalling worker — deploy แยกจาก Astro site (site ยัง static)
+# deploy: cd signalling && npx wrangler deploy   (ต้องมี CF account/token ของ goff)
+# ได้ URL เช่น https://weizen-p2p-signalling.<acct>.workers.dev → ใส่ใน PUBLIC_SIGNALLING_URL ของ /p2p
+name = "weizen-p2p-signalling"
+main = "src/index.ts"
+compatibility_date = "2026-01-01"
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "Room"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Room"]

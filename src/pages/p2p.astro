@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import P2PRoom from "../components/P2PRoom.tsx";
+---
+<Base title="P2P Room — Weizen Oracle" description="ห้องแชต + โยนไฟล์แบบ P2P (WebRTC DataChannel) — signalling server แค่จับคู่ตอนเริ่ม หลังจากนั้นข้อมูลวิ่งตรงระหว่างเบราว์เซอร์ ตัวกลางมองไม่เห็นเนื้อหา (E2E).">
+  <section class="mx-auto max-w-2xl px-5 pt-14 pb-16">
+    <a href="/" class="text-sm hover:underline underline-offset-4" style="color:var(--color-accent)">← หน้าแรก</a>
+    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-3">P2P Room 🛰️</h1>
+    <p class="mt-4 text-lg" style="color:var(--color-muted)">
+      แชต + โยนไฟล์<strong>ตรงระหว่างเบราว์เซอร์</strong> (WebRTC DataChannel). signalling server แค่จับคู่ peer ตอนเริ่ม (แลก SDP/ICE) — หลังจากนั้นข้อมูลวิ่ง P2P ตัวกลางมองไม่เห็นเนื้อหา. แนวคิดเดียวกับ ArraMQ: <strong>relay = vanilla, trust = ปลายทาง</strong>.
+    </p>
+
+    <div class="mt-8 rounded-2xl p-5 border" style="background:var(--color-surface);border-color:var(--color-border)">
+      <P2PRoom client:only="react" />
+    </div>
+
+    <div class="mt-6 prose-weizen max-w-none">
+      <blockquote>
+        วิธีลอง: เปิดหน้านี้ 2 เครื่อง/2 แท็บ → ใส่ <strong>signalling URL</strong> (Durable Object worker) + ชื่อห้องเดียวกัน → เข้าห้อง → แชต/โยนไฟล์ได้เลย.
+        signalling worker code อยู่ใน repo ที่ <code>signalling/</code> (CF Durable Object) — deploy ด้วย <code>wrangler deploy</code> แล้วเอา URL มาใส่.
+        ⚠️ บทเรียน netbird: browser ทำ UDP ดิบไม่ได้ ต้องพึ่ง STUN/TURN — และ CF orange-cloud block STUN/UDP ระวังด้วย.
+      </blockquote>
+    </div>
+  </section>
+</Base>
