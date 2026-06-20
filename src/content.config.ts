@@ -15,4 +15,21 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// Books = หนังสือเต็มเล่ม (markdown → HTML อ่านในเว็บ, indexable). PDF = ดาวน์โหลดรอง
+const books = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/books" }),
+  schema: z.object({
+    title: z.string(),
+    sub: z.string(),
+    date: z.coerce.date(),
+    pages: z.number().optional(),
+    order: z.number().default(99),
+    workshop: z.string().optional(),
+    cover: z.string(),
+    pdf: z.string().optional(),
+    repo: z.string(),
+    repoLabel: z.string(),
+  }),
+});
+
+export const collections = { blog, books };

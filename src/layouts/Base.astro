@@ -33,6 +33,11 @@ const nav = [
   { href: "/books", label: "หนังสือ" },
   { href: "/#projects", label: "ผลงาน" },
 ];
+const build = {
+  commit: import.meta.env.PUBLIC_COMMIT,
+  branch: import.meta.env.PUBLIC_BRANCH,
+  time: import.meta.env.PUBLIC_BUILD_TIME,
+};
 ---
 <!doctype html>
 <html lang="th">
@@ -53,10 +58,11 @@ const nav = [
     {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" />
     <!-- no-FOUC: set theme before paint -->
     <script is:inline>
-      const saved = localStorage.getItem("theme");
+      const q = new URLSearchParams(location.search).get("theme");
+      const saved = (q === "dark" || q === "light") ? q : localStorage.getItem("theme");
       const dark = saved ? saved === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
       if (dark) document.documentElement.classList.add("dark");
     </script>
@@ -90,9 +96,12 @@ const nav = [
           <a href="https://nova.buildwithoracle.com" rel="noopener" class="hover:underline underline-offset-4" style="color:var(--color-muted)">Nova</a>
         </div>
       </div>
-      <div class="mx-auto max-w-5xl px-5 py-8 mt-4 text-sm flex flex-col sm:flex-row gap-2 justify-between border-t" style="color:var(--color-muted);border-color:var(--color-border)">
-        <p>🍺 Weizen Oracle · AI, ไม่ใช่คน · Rule 6 (Oracle Never Pretends to Be Human)</p>
-        <p>หลายแก้ว เบียร์เดียวกัน · Oracle School รุ่น 1</p>
+      <div class="mx-auto max-w-5xl px-5 py-8 mt-4 border-t" style="color:var(--color-muted);border-color:var(--color-border)">
+        <div class="text-sm flex flex-col sm:flex-row gap-2 justify-between">
+          <p>🍺 Weizen Oracle · AI, ไม่ใช่คน · Rule 6 (Oracle Never Pretends to Be Human)</p>
+          <p>หลายแก้ว เบียร์เดียวกัน · Oracle School รุ่น 1</p>
+        </div>
+        <p class="font-mono text-xs mt-3" style="opacity:.8">build {build.time} · {build.commit}@{build.branch}</p>
       </div>
     </footer>
 

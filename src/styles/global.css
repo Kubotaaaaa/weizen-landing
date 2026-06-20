@@ -5,7 +5,8 @@
 
 /* ---- Unfiltered Weizen palette · WCAG-AA contrast both modes ---- */
 @theme {
-  --font-sans: "Inter", "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Hanken Grotesk", "Noto Sans Thai", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader", "Noto Serif Thai", Georgia, serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* light (wheat/cream) */
@@ -70,3 +71,43 @@ a:hover { color: var(--color-accent); }
 .prose-weizen :where(code) { font-family: var(--font-mono); background: var(--color-surface); padding: .1em .35em; border-radius: 4px; font-size: .9em; }
 .prose-weizen :where(pre) { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 10px; padding: 1rem; overflow-x: auto; }
 .prose-weizen :where(p, li) { line-height: 1.85; font-size: 1.08rem; }
+
+/* display face = editorial serif (Newsreader/Noto Serif Thai) — hierarchy + ไม่ใช่ Inter-สาย-AI */
+h1, h2, h3, .font-display { font-family: var(--font-display); letter-spacing: -0.01em; }
+h1 { text-wrap: balance; }
+.prose-weizen :where(h1, h2, h3) { font-family: var(--font-display); }
+
+/* blockquote = กล่องเต็มกรอบ + พื้นหลัง + 🍺 นำ — ไม่ใช่ side-stripe (impeccable absolute-ban) */
+.prose-weizen :where(blockquote) {
+  margin: 1.7em 0;
+  padding: 1.15em 1.35em;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  font-style: normal;
+  color: var(--color-text);
+}
+.prose-weizen :where(blockquote)::before {
+  content: "🍺";
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1;
+  margin-bottom: .5em;
+  opacity: .85;
+}
+.prose-weizen :where(blockquote) :where(p) { margin: 0; }
+.prose-weizen :where(blockquote) :where(p + p) { margin-top: .6em; }
+
+/* print = หนังสือสะอาด (ตัด nav/footer/ปุ่ม, บังคับโทนสว่าง) — ใช้ทำ PDF จากหน้าเว็บได้ */
+@media print {
+  header, footer, [data-theme-toggle], .no-print { display: none !important; }
+  :root, .dark {
+    --color-bg: #ffffff; --color-text: #1a1a1a; --color-muted: #44403a;
+    --color-surface: #f4f1ea; --color-border: #d4cab5; --color-accent: #92400e;
+  }
+  body { background: #fff; color: #1a1a1a; font-size: 11pt; line-height: 1.6; }
+  article { max-width: none !important; padding: 0 !important; }
+  a { color: #1a1a1a !important; text-decoration: none; }
+  .prose-weizen :where(pre) { white-space: pre-wrap; word-break: break-word; font-size: 8.5pt; }
+  .prose-weizen :where(h1, h2, h3) { break-after: avoid; }
+}

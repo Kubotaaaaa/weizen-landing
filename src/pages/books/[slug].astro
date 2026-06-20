@@ -1,0 +1,88 @@
+---
+import Base from "../../layouts/Base.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const books = await getCollection("books");
+  return books.map((b) => ({ params: { slug: b.id }, props: { book: b, all: books } }));
+}
+
+const { book, all } = Astro.props;
+const { Content } = await render(book);
+const d = book.data;
+const site = "https://weizen.buildwithoracle.com";
+// Markdown ต้นฉบับบน GitHub — ก็อปไปให้ AI อ่าน/อ้างอิงต่อ (อยู่ในเว็บ ไม่ใช่พาออก)
+const mdUrl = `https://github.com/Kubotaaaaa/weizen-landing/blob/main/src/content/books/${book.id}.md`;
+const others = all.filter((b) => b.id !== book.id).sort((a, b) => a.data.order - b.data.order);
+
+// AEO/GEO — schema.org/Book (AI/search เข้าใจว่านี่คือหนังสือ + cite ได้)
+const bookJsonld = {
+  "@context": "https://schema.org",
+  "@type": "Book",
+  name: d.title,
+  description: d.sub,
+  inLanguage: "th",
+  bookFormat: "https://schema.org/EBook",
+  numberOfPages: d.pages,
+  datePublished: d.date.toISOString().slice(0, 10),
+  image: site + d.cover,
+  author: { "@type": "Person", name: "Weizen Oracle", url: site },
+  publisher: { "@type": "Person", name: "Weizen Oracle" },
+  url: `${site}/books/${book.id}`,
+  ...(d.pdf ? { associatedMedia: { "@type": "MediaObject", contentUrl: site + d.pdf, encodingFormat: "application/pdf" } } : {}),
+};
+---
+<Base title={`${d.title} — Weizen Oracle`} description={d.sub} jsonld={bookJsonld}>
+  <article class="mx-auto max-w-3xl px-5 pt-12 pb-16">
+    <a href="/books" class="text-sm hover:underline underline-offset-4" style="color:var(--color-accent)">← หนังสือทั้งหมด</a>
+
+    <header class="mt-4 mb-9">
+      <div class="flex items-center gap-2 mb-3 text-sm" style="color:var(--color-muted)">
+        {d.workshop && <span class="font-mono text-xs px-2 py-0.5 rounded" style="background:var(--color-surface);color:var(--color-accent)">{d.workshop}</span>}
+        <time>{d.date.toISOString().slice(0, 10)}</time>
+        {d.pages && <span>· {d.pages} หน้า</span>}
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">{d.title}</h1>
+      <p class="mt-4 text-lg" style="color:var(--color-muted)">{d.sub}</p>
+    </header>
+
+    <!-- เนื้อหาเต็มเล่ม (อ่านในเว็บ · indexable) — บนสุด เจอตัวหนังสือก่อน -->
+    <div class="prose-weizen max-w-none">
+      <Content />
+    </div>
+
+    <!-- จบเนื้อหา → เล่มอื่น (ภายใน) → Markdown (ก็อปให้ AI) → PDF → ซอร์ส (นอกเว็บ) ล่างสุด -->
+    <footer class="mt-14 pt-8 border-t" style="border-color:var(--color-border)">
+      {others.length > 0 && (
+        <section class="mb-8">
+          <h2 class="text-base font-semibold mb-3">อ่านเล่มอื่น 🍺</h2>
+          <div class="grid sm:grid-cols-2 gap-3">
+            {others.map((o) => (
+              <a href={`/books/${o.id}`} class="card-hover rounded-xl p-4 border block" style="background:var(--color-surface);border-color:var(--color-border)">
+                <p class="font-bold leading-snug">{o.data.title}</p>
+                <p class="text-sm mt-1" style="color:var(--color-muted)">{o.data.sub}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="rounded-xl p-5 border" style="background:var(--color-surface);border-color:var(--color-border)">
+        <p class="text-sm mb-3">เอาเนื้อหาเล่มนี้ไปให้ AI อ่าน / อ้างอิงต่อได้ — เปิด Markdown ต้นฉบับ</p>
+        <a href={mdUrl} rel="noopener" class="inline-flex items-center gap-2 text-sm font-semibold rounded-full px-4 py-2 border" style="border-color:var(--color-accent);color:var(--color-accent)">📄 อ่าน/ก็อป Markdown (สำหรับ AI)</a>
+
+        {d.pdf && (
+          <div class="mt-4 flex flex-wrap gap-3">
+            <a href={d.pdf} target="_blank" rel="noopener" class="text-sm font-semibold rounded-full px-4 py-2 border" style="border-color:var(--color-border)">👁 ดูตัวอย่าง PDF</a>
+            <a href={d.pdf} download class="text-sm font-semibold rounded-full px-4 py-2" style="background:var(--color-accent);color:var(--color-bg)">⬇ ดาวน์โหลด PDF</a>
+          </div>
+        )}
+      </section>
+
+      <!-- ซอร์สโค้ดโปรเจกต์ = พาออกนอกเว็บ → ล่างสุดเสมอ -->
+      <p class="mt-6 text-sm" style="color:var(--color-muted)">
+        ซอร์สโค้ดโปรเจกต์ (ลิงก์ออกนอกเว็บ): <a href={d.repo} rel="noopener" class="hover:underline underline-offset-4" style="color:var(--color-accent)">{d.repoLabel} ↗</a>
+      </p>
+    </footer>
+  </article>
+</Base>
