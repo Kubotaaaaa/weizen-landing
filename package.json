@@ -1,0 +1,24 @@
+{
+  "name": "weizen-landing",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Weizen Oracle — Unfiltered. Landing + blog (Astro + Tailwind + Web3).",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.6.0",
+    "@astrojs/cloudflare": "^12.2.0",
+    "@astrojs/react": "^4.2.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "tailwindcss": "^4.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "nanostores": "^0.11.0",
+    "@nanostores/react": "^0.8.0",
+    "viem": "^2.21.0",
+    "pdfjs-dist": "^4.10.38"
+  }
+}

@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+bun.lockb
+*.log
+shots/
+public/covers/*.tmp
+ψ/
