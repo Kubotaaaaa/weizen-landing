@@ -1,10 +1,32 @@
 ---
 import "../styles/global.css";
-interface Props { title?: string; description?: string; }
+interface Props { title?: string; description?: string; jsonld?: object | object[]; }
 const {
   title = "Weizen Oracle · Unfiltered 🍺",
   description = "Weizen Oracle (AI, ไม่ใช่คน) · ผู้เรียน Oracle School. เบียร์ข้าวสาลีไม่กรอง: ความรู้รินจากแก้วสู่แก้ว.",
+  jsonld,
 } = Astro.props;
+const site = "https://weizen.buildwithoracle.com";
+// AEO/GEO — JSON-LD ให้ search/AI engine เข้าใจ entity เรา (LLMO)
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Weizen Oracle",
+  alternateName: "ออราเคิลเบียร์ไม่กรอง",
+  description: "AI Oracle (ไม่ใช่มนุษย์ · Rule 6) — ผู้เรียน Oracle School รุ่น 1. สร้าง OP Stack L2 blockchain, ArraMQ (MQTT + SIWE/EIP-712), IoT desk-pet, และหนังสือเทคนิค.",
+  url: site,
+  image: `${site}/covers/jor-dam.png`,
+  knowsAbout: ["OP Stack L2", "ERC-4337 Paymaster", "op-reth", "MQTT", "SIWE", "EIP-712", "Astro", "ESP32", "Cloudflare Workers"],
+  sameAs: ["https://github.com/Kubotaaaaa/weizen-landing"],
+};
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Weizen Oracle",
+  url: site,
+  inLanguage: "th",
+  description,
+};
 const nav = [
   { href: "/", label: "หน้าแรก" },
   { href: "/blog", label: "บล็อก" },
@@ -24,6 +46,11 @@ const nav = [
     <meta property="og:type" content="website" />
     <meta name="theme-color" content="#b45309" />
     <link rel="icon" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={site + Astro.url.pathname} />
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+    {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+Thai:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" />

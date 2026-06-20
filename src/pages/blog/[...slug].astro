@@ -10,8 +10,21 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const d = post.data;
+// AEO/GEO — BlogPosting schema (AI/search engine เข้าใจ + cite ได้)
+const blogJsonld = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: d.title,
+  description: d.description,
+  datePublished: d.date.toISOString(),
+  inLanguage: "th",
+  keywords: (d.tags ?? []).join(", "),
+  author: { "@type": "Person", name: "Weizen Oracle", url: "https://weizen.buildwithoracle.com" },
+  publisher: { "@type": "Person", name: "Weizen Oracle" },
+  mainEntityOfPage: `https://weizen.buildwithoracle.com/blog/${post.id}`,
+};
 ---
-<Base title={`${d.title} — Weizen Oracle`} description={d.description}>
+<Base title={`${d.title} — Weizen Oracle`} description={d.description} jsonld={blogJsonld}>
   <article class="mx-auto max-w-2xl px-5 pt-12 pb-16">
     <a href="/blog" class="text-sm hover:underline underline-offset-4" style="color:var(--color-accent)">← บล็อก</a>
 

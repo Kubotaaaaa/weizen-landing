@@ -4,5 +4,3 @@ dist/
 bun.lockb
 *.log
 shots/
-public/covers/*.tmp
-ψ/
