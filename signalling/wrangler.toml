@@ -11,4 +11,4 @@ class_name = "Room"
 
 [[migrations]]
 tag = "v1"
-new_classes = ["Room"]
+new_sqlite_classes = ["Room"]   # SQLite-backed DO = ใช้ได้บน CF Workers FREE plan (worker นี้ไม่เก็บ storage จริง แค่ in-memory peers)
