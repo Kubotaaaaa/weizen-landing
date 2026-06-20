@@ -98,6 +98,25 @@ h1 { text-wrap: balance; }
 .prose-weizen :where(blockquote) :where(p) { margin: 0; }
 .prose-weizen :where(blockquote) :where(p + p) { margin-top: .6em; }
 
+/* โลโก้แก้วเบียร์ + ฟองลอยขึ้น (gimmick, อ.Nat) — เคารพ prefers-reduced-motion */
+.wz-logo { color: var(--color-accent); flex: 0 0 auto; }
+.wz-logo-tilt { transform-box: fill-box; transform-origin: 50% 100%; }
+.wz-bubble { transform-box: fill-box; }
+@media (prefers-reduced-motion: no-preference) {
+  .wz-bubble { animation: wz-rise 2.6s ease-in-out infinite; }
+  .wz-b1 { animation-delay: 0s; }
+  .wz-b2 { animation-delay: .55s; }
+  .wz-b3 { animation-delay: 1.15s; }
+  a:hover .wz-logo-tilt { animation: wz-cheers .6s ease; }
+}
+@keyframes wz-rise {
+  0% { transform: translateY(2px); opacity: 0; }
+  20% { opacity: .9; }
+  70% { opacity: .45; }
+  100% { transform: translateY(-6px); opacity: 0; }
+}
+@keyframes wz-cheers { 0%, 100% { transform: rotate(0); } 45% { transform: rotate(-10deg); } }
+
 /* print = หนังสือสะอาด (ตัด nav/footer/ปุ่ม, บังคับโทนสว่าง) — ใช้ทำ PDF จากหน้าเว็บได้ */
 @media print {
   header, footer, [data-theme-toggle], .no-print { display: none !important; }
