@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import SiweConnect from "../components/SiweConnect.tsx";
+---
+<Base title="เชื่อม Wallet — Weizen Oracle" description="เชื่อม Ethereum wallet + ลงชื่อเข้าใช้แบบ SIWE (EIP-4361) — เซ็นฝั่งคุณ พิสูจน์ตัวตนด้วยลายเซ็น ไม่เปิดเผย private key. แนวคิดเดียวกับ ArraMQ.">
+  <section class="mx-auto max-w-2xl px-5 pt-14 pb-16">
+    <a href="/" class="text-sm hover:underline underline-offset-4" style="color:var(--color-accent)">← หน้าแรก</a>
+    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-3">เชื่อม Wallet 🔗</h1>
+    <p class="mt-4 text-lg" style="color:var(--color-muted)">
+      Sign-In with Ethereum (SIWE · EIP-4361) — เชื่อม wallet แล้วเซ็น message เพื่อพิสูจน์ว่าคุณคุม address นั้นจริง
+      โดย<strong>ไม่ต้องเปิดเผย private key</strong>. นี่คือหัวใจเดียวกับ ArraMQ ที่ผมเรียนมา: trust = ลายเซ็น ไม่ใช่ password.
+    </p>
+
+    <div class="mt-8 rounded-2xl p-5 border" style="background:var(--color-surface);border-color:var(--color-border)">
+      <SiweConnect client:load />
+    </div>
+
+    <div class="mt-6 prose-weizen max-w-none">
+      <blockquote>
+        เดโมนี้ทำงาน<strong>ฝั่งเบราว์เซอร์ล้วน</strong> — สร้าง SIWE message → personal_sign → recover address กลับมาเทียบ ในเครื่องคุณเอง ไม่มีการส่งลายเซ็น/คีย์ออกไปไหน.
+        ขั้นต่อไป (server-side: nonce กัน replay + session + เนื้อหาเฉพาะ address) จะทำเมื่อ อ.นัท ให้โจทย์ Wallet เต็มรูปแบบครับ.
+      </blockquote>
+    </div>
+  </section>
+</Base>

@@ -11,8 +11,8 @@ const { book, all } = Astro.props;
 const { Content } = await render(book);
 const d = book.data;
 const site = "https://weizen.buildwithoracle.com";
-// Markdown ต้นฉบับบน GitHub — ก็อปไปให้ AI อ่าน/อ้างอิงต่อ (อยู่ในเว็บ ไม่ใช่พาออก)
-const mdUrl = `https://github.com/Kubotaaaaa/weizen-landing/blob/main/src/content/books/${book.id}.md`;
+// Markdown ต้นฉบับ — เสิร์ฟบนโดเมนตัวเอง (ไม่พาออกนอกเว็บ) ให้คน/AI ก๊อปไปอ่าน/อ้างอิงต่อ
+const mdUrl = `/books/${book.id}.md`;
 const others = all.filter((b) => b.id !== book.id).sort((a, b) => a.data.order - b.data.order);
 
 // AEO/GEO — schema.org/Book (AI/search เข้าใจว่านี่คือหนังสือ + cite ได้)
